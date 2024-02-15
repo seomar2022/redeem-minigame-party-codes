@@ -5,7 +5,9 @@
 #chromdriver is needed ->https://chromedriver.chromium.org/
 #my current version is 121.0.6167.161（Official Build）
 #If you are using Chrome version 115 or newer, please consult the Chrome for Testing availability dashboard. This page provides convenient JSON endpoints for specific ChromeDriver version downloading.
+#https://www.codeit.kr/community/questions/UXVlc3Rpb246NjQxNDEzYTRlNzQ2NDc0NTZhMzQ5NTA1
+
 from selenium import webdriver
 
 driver = webdriver.Chrome("c://chromedriver.exe")
-driver.get("https://coupon.withhive.com/720")
+#driver.get("https://coupon.withhive.com/720")
