@@ -1,13 +1,12 @@
-#Selenium is an open source umbrella project 
-#for a range of tools and libraries aimed at supporting browser automation.
-#pip install selenium
-
-#chromdriver is needed ->https://chromedriver.chromium.org/
-#my current version is 121.0.6167.161（Official Build）
-#If you are using Chrome version 115 or newer, please consult the Chrome for Testing availability dashboard. This page provides convenient JSON endpoints for specific ChromeDriver version downloading.
-#https://www.codeit.kr/community/questions/UXVlc3Rpb246NjQxNDEzYTRlNzQ2NDc0NTZhMzQ5NTA1
-
 from selenium import webdriver
+#from selenium.webdriver.chrome.options import Options
+import time
 
-driver = webdriver.Chrome("c://chromedriver.exe")
-#driver.get("https://coupon.withhive.com/720")
+# options = Options()
+# options.add_argument("--start-maximized")
+# options.add_experimental_option("detach", True)
+
+driver = webdriver.Chrome()
+
+driver.get("https://coupon.withhive.com/720")
+time.sleep(2)
