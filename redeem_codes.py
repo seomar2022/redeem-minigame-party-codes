@@ -2,6 +2,8 @@ from selenium import webdriver
 #from selenium.webdriver.chrome.options import Options
 import time
 from selenium.webdriver.common.by import By
+import pandas as pd  #pip install pandas
+
 
 # options = Options()
 # options.add_argument("--start-maximized")
