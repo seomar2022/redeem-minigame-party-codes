@@ -6,11 +6,19 @@ import pandas as pd
 #print(data)
 
 cs_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1])
+cs_codes = cs_codes.dropna().values.tolist() 
+#.dropna(): remove NaN values
+#.values.tolist(): convert as a list
+
 #print(cs_codes)
-list = cs_codes.values.tolist()
-print(list[0])
-for i in list:
-    print(int(i))
-    print(type(int(i)))
-    print("-----")
-print(type(list[0]))
+
+# print(list[0])
+# print(f"{list[0]}")
+
+cs_codes = [int(float(str(x).split('.')[0])) for sublist in cs_codes for x in sublist]
+
+print(cs_codes)
+#print(type(converted_list[0]))
+
+
+# print(type(list[0]))
