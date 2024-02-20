@@ -11,7 +11,7 @@ driver.get("https://coupon.withhive.com/720")
 #time.sleep(10) #Wait 10 seconds for the page to completely load
 
 #get CS codes in the excel file
-cs_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1])
+cs_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="nicknames with CS codes")
 
 #.dropna(): remove NaN values
 #.values.tolist(): convert as a list
@@ -24,6 +24,9 @@ cs_codes = [int(float(str(x).split('.')[0])) for sublist in cs_codes for x in su
 #select a server
 driver.find_element(By.CSS_SELECTOR, "#HIVEcoupon > div.content > div > div.input_box.server_list_area.show > div.select_wrap > button").click()
 driver.find_element(By.CSS_SELECTOR, "#HIVEcoupon > div.content > div > div.input_box.server_list_area.show > div.select_wrap > ul > li > button").click()
+
+
+coupon_code = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
 
 #input CS code and coupon code
 driver.find_element(By.CSS_SELECTOR, "#cs_code").send_keys(f"{cs_codes[0]}")
