@@ -28,9 +28,14 @@ driver.find_element(By.CSS_SELECTOR, "#HIVEcoupon > div.content > div > div.inpu
 
 coupon_code = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
 
+#search last cell that is inserted data
+rows, cols = coupon_code.shape
+last_row_index = rows - 1
+last_col_index = cols - 1
+
 #input CS code and coupon code
-driver.find_element(By.CSS_SELECTOR, "#cs_code").send_keys(f"{cs_codes[0]}")
-driver.find_element(By.CSS_SELECTOR, "#coupon_code").send_keys("MGP200DAYS")
+driver.find_element(By.CSS_SELECTOR, "#cs_code").send_keys(f"{cs_codes[2]}")
+driver.find_element(By.CSS_SELECTOR, "#coupon_code").send_keys(coupon_code.iat[last_row_index, last_col_index])
 driver.find_element(By.CSS_SELECTOR, "#HIVEcoupon > div.content > div > button").click()
 time.sleep(5)
 

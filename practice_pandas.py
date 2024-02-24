@@ -25,6 +25,16 @@ cs_codes = [int(float(str(x).split('.')[0])) for sublist in cs_codes for x in su
 
 coupon_code = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
 print(coupon_code.shape)
-print(coupon_code.loc[0])
-print(coupon_code.tail(1))
+#print(coupon_code.loc[0])
+#print(type(coupon_code.tail(1)))
+#print(coupon_code.tail(1).to_string, "aaaaa")
+print(type(coupon_code.iat[0,0]))
 #print(coupon_code.values.tolist()[1])
+#https://velog.io/@cha-suyeon/%ED%8C%90%EB%8B%A4%EC%8A%A4pandas-%EC%8B%A4%EC%8A%B5-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%B6%94%EC%B6%9C
+
+rows, cols = coupon_code.shape
+
+# 가장 마지막 행과 열의 인덱스 계산
+last_row_index = rows - 1
+last_col_index = cols - 1
+print(last_col_index, last_row_index)
