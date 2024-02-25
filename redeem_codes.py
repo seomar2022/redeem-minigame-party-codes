@@ -2,6 +2,7 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
 import pandas as pd  #pip install pandas
+from bs4 import BeautifulSoup
 
 driver = webdriver.Chrome()
 
@@ -33,7 +34,7 @@ rows, cols = coupon_code.shape
 last_row_index = rows - 1
 last_col_index = cols - 1
 
-#input CS code and coupon code
+#input CS code and coupon code 
 driver.find_element(By.CSS_SELECTOR, "#cs_code").send_keys(f"{cs_codes[2]}")
 driver.find_element(By.CSS_SELECTOR, "#coupon_code").send_keys(coupon_code.iat[last_row_index, last_col_index])
 driver.find_element(By.CSS_SELECTOR, "#HIVEcoupon > div.content > div > button").click()
@@ -43,7 +44,7 @@ time.sleep(5)
 driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > ul > li > label > span").click()
 driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > div.btns > button.btn_confirm").click()
 
-time.sleep(5)
+time.sleep(50)
 
 #result(1) -> redeem the code successfully
 #result(2) -> the codes was already used
