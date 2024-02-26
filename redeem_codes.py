@@ -2,7 +2,7 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
 import pandas as pd  #pip install pandas
-from bs4 import BeautifulSoup
+
 
 driver = webdriver.Chrome()
 
@@ -44,7 +44,20 @@ time.sleep(5)
 driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > ul > li > label > span").click()
 driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > div.btns > button.btn_confirm").click()
 
-time.sleep(50)
+time.sleep(5)
 
 #result(1) -> redeem the code successfully
 #result(2) -> the codes was already used
+
+
+# 
+result = driver.find_element(By.CSS_SELECTOR, "#layer_msg").text
+
+if result.find("!") == -1:
+    print("이미등록된 코드")
+print(result)
+
+driver.find_element(By.CSS_SELECTOR, "#layer_close_btn").click()
+time.sleep(5)
+
+driver.quit()
