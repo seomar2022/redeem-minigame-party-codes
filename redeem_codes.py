@@ -11,7 +11,10 @@ driver.get("https://coupon.withhive.com/720")
 #time.sleep(10) #Wait 10 seconds for the page to completely load
 
 #get CS codes in the excel file
-cs_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="nicknames with CS codes")
+df = pd.read_excel("C:/study/CS codes.xlsx", sheet_name="nicknames with CS codes")
+
+#select the coupon column(its index is 1)
+cs_codes = df.iloc[:,[1]]
 
 #.dropna(): remove NaN values
 #.values.tolist(): convert as a list
@@ -28,6 +31,9 @@ rows, cols = coupon_code.shape
 last_row_index = rows - 1
 last_col_index = cols - 1
 
+#make list to contain index of each situation
+complete = []
+fail = []
 for cs_code in cs_codes:
         
     #select a server
@@ -39,6 +45,7 @@ for cs_code in cs_codes:
     driver.find_element(By.CSS_SELECTOR, "#coupon_code").send_keys(coupon_code.iat[last_row_index, last_col_index])
     driver.find_element(By.CSS_SELECTOR, "#HIVEcoupon > div.content > div > button").click()
 
+    time.sleep(5)
     #select a server again
     driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > ul > li > label > span").click()
     driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > div.btns > button.btn_confirm").click()
@@ -50,14 +57,28 @@ for cs_code in cs_codes:
     #result(1) -> redeem the code successfully
 
     #result(2) -> the codes was already used
-    already_used = []
+    
     if result.find("!") == -1: #when the message contain a letter '!', it means redeeming was completed.
-        already_used.append(cs_code)
+        fail.append(cs_codes.index(cs_code))
+    else:
+        complete.append(cs_codes.index(cs_code))
 
     #click the close button
     driver.find_element(By.CSS_SELECTOR, "#layer_close_btn").click()
     
     #refre a webpage
     driver.refresh()
+
+
+nicknames = df.iloc[:,[0]]
+nicknames = nicknames.dropna().values.tolist() 
+
+print("쿠폰 등록 성공 유저: ", end="")
+for index in complete:
+    print(nicknames[index], end=" ")
+
+print("\n쿠폰 등록 실패 유저(이미 쿠폰을 사용): ", end="")
+for index in fail:
+    print(nicknames[index], end=" ")
 
 driver.quit()
