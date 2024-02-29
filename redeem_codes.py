@@ -53,14 +53,10 @@ for cs_code in cs_codes:
     #read the message of alert
     result = driver.find_element(By.CSS_SELECTOR, "#layer_msg").text
 
-
-    #result(1) -> redeem the code successfully
-
-    #result(2) -> the codes was already used
-    
     if result.find("!") == -1: #when the message contain a letter '!', it means redeeming was completed.
+        #if redeeming failed since the coupon was already used,  append the cs_codes in 'fail'
         fail.append(cs_codes.index(cs_code))
-    else:
+    else: #if the code was redeemed successfully, append the cs_codes in 'complete'
         complete.append(cs_codes.index(cs_code))
 
     #click the close button
