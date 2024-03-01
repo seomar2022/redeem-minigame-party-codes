@@ -1,6 +1,8 @@
 #pip install pandas
 #pip install Pyarrow
 import pandas as pd
+import pyautogui as pyautogui #pip install pyautogui
+
 
 #data = pd.read_excel("C:/study/CS codes.xlsx")
 #print(data)
@@ -50,3 +52,5 @@ nicknames = nicknames.dropna().values.tolist()
 
 for i in nicknames:
     print(i)
+
+pyautogui.alert('check')

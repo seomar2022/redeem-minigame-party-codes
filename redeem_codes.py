@@ -2,6 +2,8 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
 import pandas as pd  #pip install pandas
+import pyautogui as pyautogui #pip install pyautogui
+import openpyxl
 
 driver = webdriver.Chrome()
 
@@ -10,8 +12,9 @@ driver.get("https://coupon.withhive.com/720")
 #time.sleep(second): Suspend execution of the calling thread for the given number of seconds.
 #time.sleep(10) #Wait 10 seconds for the page to completely load
 
+file = "C:/study/CS codes.xlsx"
 #get CS codes in the excel file
-df = pd.read_excel("C:/study/CS codes.xlsx", sheet_name="nicknames with CS codes")
+df = pd.read_excel(file, sheet_name="nicknames with CS codes")
 
 #select the coupon column(its index is 1)
 cs_codes = df.iloc[:,[1]]
@@ -65,16 +68,20 @@ for cs_code in cs_codes:
     #refre a webpage
     driver.refresh()
 
-
+driver.quit()
 nicknames = df.iloc[:,[0]]
 nicknames = nicknames.dropna().values.tolist() 
 
-print("쿠폰 등록 성공 유저: ", end="")
-for index in complete:
-    print(nicknames[index], end=" ")
+# print("쿠폰 등록 성공 유저: ", end="")
+# for index in complete:
+#     print(nicknames[index], end=" ")
 
-print("\n쿠폰 등록 실패 유저(이미 쿠폰을 사용): ", end="")
-for index in fail:
-    print(nicknames[index], end=" ")
+# print("\n쿠폰 등록 실패 유저(이미 쿠폰을 사용): ", end="")
+# for index in fail:
+#     print(nicknames[index], end=" ")
 
-driver.quit()
+message = f"쿠폰 등록 성공: {len(complete)}명\n쿠폰 등록 실패: {len(fail)}명\n엑셀참조"
+
+pyautogui.alert(message, title='미겜천 쿠폰등록하기')
+
+
