@@ -27,12 +27,13 @@ cs_codes = cs_codes.dropna().values.tolist()
 #[105548.0] -> 105548
 cs_codes = [int(float(str(x).split('.')[0])) for sublist in cs_codes for x in sublist]
 
-coupon_code = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
+coupon_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
 
 #search last cell that is inserted data
-rows, cols = coupon_code.shape
+rows, cols = coupon_codes.shape
 last_row_index = rows - 1
 last_col_index = cols - 1
+coupon_code = coupon_codes.iat[last_row_index, last_col_index]
 
 #make list to contain index of each situation
 complete = []
@@ -45,10 +46,10 @@ for cs_code in cs_codes:
 
     #input CS code and coupon code 
     driver.find_element(By.CSS_SELECTOR, "#cs_code").send_keys(cs_code)
-    driver.find_element(By.CSS_SELECTOR, "#coupon_code").send_keys(coupon_code.iat[last_row_index, last_col_index])
+    driver.find_element(By.CSS_SELECTOR, "#coupon_code").send_keys(coupon_code)
     driver.find_element(By.CSS_SELECTOR, "#HIVEcoupon > div.content > div > button").click()
 
-    time.sleep(5)
+    time.sleep(1)
     #select a server again
     driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > ul > li > label > span").click()
     driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > div.btns > button.btn_confirm").click()
@@ -85,3 +86,16 @@ message = f"쿠폰 등록 성공: {len(complete)}명\n쿠폰 등록 실패: {len
 pyautogui.alert(message, title='미겜천 쿠폰등록하기')
 
 
+#import an existing Excel file
+wb = openpyxl.load_workbook(file)
+
+ws = wb["nicknames with CS codes"]
+col_max = ws.max_column
+
+ws.cell(row=1, column = col_max, value=coupon_code)
+
+# ws.cell(row=2, column =1, value="2030-01-01")
+# ws.append(["2030-01-02", "pen", 400, 5, "=C3*D3"])
+
+# save file
+wb.save(file)

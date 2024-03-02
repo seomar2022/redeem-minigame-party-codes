@@ -2,7 +2,7 @@
 #pip install Pyarrow
 import pandas as pd
 import pyautogui as pyautogui #pip install pyautogui
-
+import openpyxl
 
 #data = pd.read_excel("C:/study/CS codes.xlsx")
 #print(data)
@@ -54,3 +54,20 @@ for i in nicknames:
     print(i)
 
 pyautogui.alert('check')
+
+file = "C:/study/CS codes.xlsx"
+#import an existing Excel file
+wb = openpyxl.load_workbook(file)
+
+ws = wb["nicknames with CS codes"]
+col_max = ws.max_column
+col_row = ws.max_row
+print(col_max)
+print(col_row)
+ws.cell(row=1, column = col_max, value='happy')
+
+# ws.cell(row=2, column =1, value="2030-01-01")
+# ws.append(["2030-01-02", "pen", 400, 5, "=C3*D3"])
+
+# save file
+wb.save(file)
