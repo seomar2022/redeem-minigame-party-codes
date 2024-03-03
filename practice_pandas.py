@@ -61,10 +61,10 @@ wb = openpyxl.load_workbook(file)
 
 ws = wb["nicknames with CS codes"]
 col_max = ws.max_column
-col_row = ws.max_row
+max_row = ws.max_row
 print(col_max)
-print(col_row)
-ws.cell(row=1, column = col_max, value='happy')
+print(max_row)
+#ws.cell(row=1, column = col_max, value='happy')
 
 # ws.cell(row=2, column =1, value="2030-01-01")
 # ws.append(["2030-01-02", "pen", 400, 5, "=C3*D3"])
