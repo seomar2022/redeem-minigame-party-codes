@@ -34,24 +34,6 @@ import openpyxl
 # #print(coupon_code.values.tolist()[1])
 # #https://velog.io/@cha-suyeon/%ED%8C%90%EB%8B%A4%EC%8A%A4pandas-%EC%8B%A4%EC%8A%B5-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%B6%94%EC%B6%9C
 
-# rows, cols = coupon_code.shape
-
-# # 가장 마지막 행과 열의 인덱스 계산
-# last_row_index = rows - 1
-# last_col_index = cols - 1
-# print(last_col_index, last_row_index)
-
-
-df = pd.read_excel("C:/study/CS codes.xlsx", sheet_name="nicknames with CS codes")
-
-#select the coupon column(its index is 1)
-cs_codes = df.iloc[:,[1]]
-nicknames = df.iloc[:,[0]]
-
-nicknames = nicknames.dropna().values.tolist() 
-
-for i in nicknames:
-    print(i)
 
 pyautogui.alert('check')
 
@@ -59,15 +41,26 @@ file = "C:/study/CS codes.xlsx"
 #import an existing Excel file
 wb = openpyxl.load_workbook(file)
 
-ws = wb["nicknames with CS codes"]
+ws = wb["Sheet1"]
+# ws = wb["nicknames with CS codes"]
+#the below function counts even empty cell, it leads unexpect result
 col_max = ws.max_column
 max_row = ws.max_row
+
+# col_max = max(len(row) for row in ws.values)
+# max_row = len(list(ws.values))
+
+
+#https://stackoverflow.com/questions/46569496/openpyxl-max-row-and-max-column-wrongly-reports-a-larger-figure
 print(col_max)
 print(max_row)
 #ws.cell(row=1, column = col_max, value='happy')
 
 # ws.cell(row=2, column =1, value="2030-01-01")
 # ws.append(["2030-01-02", "pen", 400, 5, "=C3*D3"])
-
+for row in ws.iter_rows(values_only=True):
+    for cell in row:
+        print(cell, end=" ")
+    print('\n')
 # save file
 wb.save(file)
