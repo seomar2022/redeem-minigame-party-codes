@@ -38,6 +38,7 @@ coupon_code = coupon_codes.iat[last_row_index, last_col_index]
 #make list to contain index of each situation
 complete = []
 fail = []
+
 for cs_code in cs_codes:
         
     #select a server
@@ -50,6 +51,7 @@ for cs_code in cs_codes:
     driver.find_element(By.CSS_SELECTOR, "#HIVEcoupon > div.content > div > button").click()
 
     time.sleep(1)
+
     #select a server again
     driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > ul > li > label > span").click()
     driver.find_element(By.CSS_SELECTOR, "body > div.pop_wrap.server.coupon_server_lyr > div > div.btns > button.btn_confirm").click()
@@ -81,7 +83,7 @@ nicknames = nicknames.dropna().values.tolist()
 # for index in fail:
 #     print(nicknames[index], end=" ")
 
-message = f"쿠폰 등록 성공: {len(complete)}명\n쿠폰 등록 실패: {len(fail)}명\n엑셀참조"
+message = f"쿠폰 등록 성공: {len(complete)}명\n쿠폰 등록 실패: {len(fail)}명\n엑셀 참조"
 
 pyautogui.alert(message, title='미겜천 쿠폰등록하기')
 
