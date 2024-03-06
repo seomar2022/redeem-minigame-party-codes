@@ -72,32 +72,34 @@ for cs_code in cs_codes:
     driver.refresh()
 
 driver.quit()
-nicknames = df.iloc[:,[0]]
-nicknames = nicknames.dropna().values.tolist() 
 
-# print("쿠폰 등록 성공 유저: ", end="")
-# for index in complete:
-#     print(nicknames[index], end=" ")
-
-# print("\n쿠폰 등록 실패 유저(이미 쿠폰을 사용): ", end="")
-# for index in fail:
-#     print(nicknames[index], end=" ")
-
+##alert the result to the user
 message = f"쿠폰 등록 성공: {len(complete)}명\n쿠폰 등록 실패: {len(fail)}명\n엑셀 참조"
-
 pyautogui.alert(message, title='미겜천 쿠폰등록하기')
 
-
-#import an existing Excel file
+##record the result in the Excel file
+#import the Excel file
 wb = openpyxl.load_workbook(file)
-
 ws = wb["nicknames with CS codes"]
-col_max = ws.max_column
 
-ws.cell(row=1, column = col_max, value=coupon_code)
+#find the maximum value of rows
+for max_row, row in enumerate(ws, 1):
+    if all(c.value is None for c in row):
+        break #If all cells in a row are empty, it breaks out of the loop.
 
-# ws.cell(row=2, column =1, value="2030-01-01")
-# ws.append(["2030-01-02", "pen", 400, 5, "=C3*D3"])
+#find the maximum value of columns
+max_col = 0
+for col in ws.iter_cols(): #iterate over each column in the worksheet ws
+    if any(cell.value is not None for cell in col): #check if at least one cell in that column has a non-empty value
+        max_col += 1
+
+ws.cell(row=1, column = max_col+1, value=coupon_code)
+
+for index in complete:
+    ws.cell(row=index+2, column =max_col+1, value="등록 성공")
+
+for index in fail:
+    ws.cell(row=index+2, column =max_col+1, value="등록 실패")
 
 # save file
 wb.save(file)
