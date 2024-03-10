@@ -5,8 +5,14 @@ import pandas as pd  #pip install pandas
 import pyautogui as pyautogui #pip install pyautogui
 import openpyxl
 
+previous_check =pyautogui.alert("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
+
+if previous_check == "yes":
+    print("")
+
 driver = webdriver.Chrome()
 
+#인터넷 연결 안되어있으면 여기서 멈춤. alert창 띄우기. ""
 driver.get("https://coupon.withhive.com/720")
 
 #time.sleep(second): Suspend execution of the calling thread for the given number of seconds.
