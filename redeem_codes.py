@@ -9,10 +9,28 @@ previous_check =pyautogui.alert("파일경로에 전용양식(CS codes.xlsx)에 
 
 if previous_check == "yes":
     print("")
+else:
+    wb = openpyxl.Workbook()
+    #select currently active sheet
+    ws = wb.active
+
+    #change name of sheet
+    ws.title = "nicknames with CS codes"
+
+    #write the head
+    ws.append(["nickname", "cs code"])
+
+    ws = wb.create_sheet("coupon")
+    ws.append(["date", "coupon"])
+    wb.save("CS codes.xlsx")
+
+
+
 
 driver = webdriver.Chrome()
 
 #인터넷 연결 안되어있으면 여기서 멈춤. alert창 띄우기. ""
+
 driver.get("https://coupon.withhive.com/720")
 
 #time.sleep(second): Suspend execution of the calling thread for the given number of seconds.
