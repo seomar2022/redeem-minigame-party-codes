@@ -4,11 +4,16 @@ from selenium.webdriver.common.by import By
 import pandas as pd  #pip install pandas
 import pyautogui as pyautogui #pip install pyautogui
 import openpyxl
+import sys
+import os
 
-previous_check =pyautogui.alert("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
+
+file = "CS codes.xlsx"
+
+previous_check =pyautogui.confirm("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
 
 if previous_check == "yes":
-    print("")
+    pyautogui.alert("쿠폰 등록을 시작합니다.")
 else:
     wb = openpyxl.Workbook()
     #select currently active sheet
@@ -22,7 +27,11 @@ else:
 
     ws = wb.create_sheet("coupon")
     ws.append(["date", "coupon"])
-    wb.save("CS codes.xlsx")
+    wb.save(file)
+    pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력해주세요.")
+
+    os.startfile(file) #open the Excel file
+    sys.exit()  # Forcefully exiting the program
 
 
 
@@ -36,7 +45,8 @@ driver.get("https://coupon.withhive.com/720")
 #time.sleep(second): Suspend execution of the calling thread for the given number of seconds.
 #time.sleep(10) #Wait 10 seconds for the page to completely load
 
-file = "C:/study/CS codes.xlsx"
+#file = "C:/study/CS codes.xlsx"
+
 #get CS codes in the excel file
 df = pd.read_excel(file, sheet_name="nicknames with CS codes")
 
@@ -51,7 +61,9 @@ cs_codes = cs_codes.dropna().values.tolist()
 #[105548.0] -> 105548
 cs_codes = [int(float(str(x).split('.')[0])) for sublist in cs_codes for x in sublist]
 
-coupon_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
+
+#coupon_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
+coupon_codes = pd.read_excel("CS codes.xlsx", usecols=[1], sheet_name="coupon")
 
 #search last cell that is inserted data
 rows, cols = coupon_codes.shape
