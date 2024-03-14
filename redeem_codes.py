@@ -7,7 +7,6 @@ import openpyxl
 import sys
 import os
 
-
 file = "CS codes.xlsx"
 
 previous_check =pyautogui.confirm("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
@@ -26,9 +25,9 @@ else:
     ws.append(["nickname", "cs code"])
 
     ws = wb.create_sheet("coupon")
-    ws.append(["date", "coupon"])
+    ws.append(["coupon"])
     wb.save(file)
-    pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력해주세요.")
+    pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력 후 다시 프로그램을 실행해주세요.")
 
     os.startfile(file) #open the Excel file
     sys.exit()  # Forcefully exiting the program
@@ -38,7 +37,6 @@ else:
 
 driver = webdriver.Chrome()
 
-#인터넷 연결 안되어있으면 여기서 멈춤. alert창 띄우기. ""
 
 driver.get("https://coupon.withhive.com/720")
 
@@ -63,7 +61,7 @@ cs_codes = [int(float(str(x).split('.')[0])) for sublist in cs_codes for x in su
 
 
 #coupon_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
-coupon_codes = pd.read_excel("CS codes.xlsx", usecols=[1], sheet_name="coupon")
+coupon_codes = pd.read_excel(file, usecols=[0], sheet_name="coupon")
 
 #search last cell that is inserted data
 rows, cols = coupon_codes.shape
