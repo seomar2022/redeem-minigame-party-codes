@@ -7,7 +7,7 @@ import openpyxl
 import sys
 import os
 
-file = "CS codes.xlsx"
+file = "C:/study/CS codes.xlsx"
 
 previous_check =pyautogui.confirm("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
 
@@ -30,7 +30,7 @@ else:
     pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력 후 다시 프로그램을 실행해주세요.")
 
     os.startfile(file) #open the Excel file
-    sys.exit()  # Forcefully exiting the program
+    sys.exit()  # forcefully exiting the program
 
 
 
@@ -60,8 +60,8 @@ cs_codes = cs_codes.dropna().values.tolist()
 cs_codes = [int(float(str(x).split('.')[0])) for sublist in cs_codes for x in sublist]
 
 
-#coupon_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
-coupon_codes = pd.read_excel(file, usecols=[0], sheet_name="coupon")
+coupon_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
+#coupon_codes = pd.read_excel(file, usecols=[0], sheet_name="coupon")
 
 #search last cell that is inserted data
 rows, cols = coupon_codes.shape
@@ -69,9 +69,11 @@ last_row_index = rows - 1
 last_col_index = cols - 1
 coupon_code = coupon_codes.iat[last_row_index, last_col_index]
 
-#make list to contain index of each situation
+#make list to contain index of cs codes that successed 
 complete = []
-fail = []
+
+#make dictionary to contain index of cs codes that failed and that reason
+fail = {} 
 
 for cs_code in cs_codes:
         
@@ -96,6 +98,7 @@ for cs_code in cs_codes:
     if result.find("!") == -1: #when the message contain a letter '!', it means redeeming was completed.
         #if redeeming failed since the coupon was already used,  append the cs_codes in 'fail'
         fail.append(cs_codes.index(cs_code))
+        fail2[cs_codes.index(cs_code)] = result
     else: #if the code was redeemed successfully, append the cs_codes in 'complete'
         complete.append(cs_codes.index(cs_code))
 
@@ -133,7 +136,7 @@ for index in complete:
     ws.cell(row=index+2, column =max_col+1, value="등록 성공")
 
 for index in fail:
-    ws.cell(row=index+2, column =max_col+1, value="등록 실패")
+    ws.cell(row=index+2, column =max_col+1, value=f"등록 실패({fail[index]})")
 
 # save file
 wb.save(file)
