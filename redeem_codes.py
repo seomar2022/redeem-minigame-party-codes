@@ -22,10 +22,7 @@ else:
     ws.title = "nicknames with CS codes"
 
     #write the head
-    ws.append(["nickname", "cs code"])
-
-    ws = wb.create_sheet("coupon")
-    ws.append(["coupon"])
+    ws.append(["nickname", "cs code", "이 셀의 내용을 지우고 등록할 쿠폰코드를 써주세요!"])
     wb.save(file)
     pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력 후 다시 프로그램을 실행해주세요.")
 
@@ -33,17 +30,12 @@ else:
     sys.exit()  # forcefully exiting the program
 
 
-
-
 driver = webdriver.Chrome()
-
 
 driver.get("https://coupon.withhive.com/720")
 
 #time.sleep(second): Suspend execution of the calling thread for the given number of seconds.
 #time.sleep(10) #Wait 10 seconds for the page to completely load
-
-#file = "C:/study/CS codes.xlsx"
 
 #get CS codes in the excel file
 df = pd.read_excel(file, sheet_name="nicknames with CS codes")
@@ -60,8 +52,9 @@ cs_codes = cs_codes.dropna().values.tolist()
 cs_codes = [int(float(str(x).split('.')[0])) for sublist in cs_codes for x in sublist]
 
 
-coupon_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
+#coupon_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
 #coupon_codes = pd.read_excel(file, usecols=[0], sheet_name="coupon")
+coupon_codes = df.iloc(0)
 
 #search last cell that is inserted data
 rows, cols = coupon_codes.shape
@@ -96,9 +89,8 @@ for cs_code in cs_codes:
     result = driver.find_element(By.CSS_SELECTOR, "#layer_msg").text
 
     if result.find("!") == -1: #when the message contain a letter '!', it means redeeming was completed.
-        #if redeeming failed since the coupon was already used,  append the cs_codes in 'fail'
-        fail.append(cs_codes.index(cs_code))
-        fail2[cs_codes.index(cs_code)] = result
+        #if redeeming failed since the coupon was already used, append the cs_codes and that reason in 'fail'
+        fail[cs_codes.index(cs_code)] = result
     else: #if the code was redeemed successfully, append the cs_codes in 'complete'
         complete.append(cs_codes.index(cs_code))
 
@@ -138,5 +130,5 @@ for index in complete:
 for index in fail:
     ws.cell(row=index+2, column =max_col+1, value=f"등록 실패({fail[index]})")
 
-# save file
+# save the file
 wb.save(file)
