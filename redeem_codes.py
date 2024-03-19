@@ -24,6 +24,7 @@ else:
     #write the head
     ws.append(["nickname", "cs code", "이 셀의 내용을 지우고 등록할 쿠폰코드를 써주세요!"])
     wb.save(file)
+
     pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력 후 다시 프로그램을 실행해주세요.")
 
     os.startfile(file) #open the Excel file
@@ -59,7 +60,7 @@ for col in ws.iter_cols(): #iterate over each column in the worksheet ws
 #get CS codes in the excel file
 df = pd.read_excel(file, sheet_name="nicknames with CS codes")
 
-#select the coupon column(its index is 1)
+#select the cs code column(its index is 1)
 cs_codes = df.iloc[:,[1]]
 
 #.dropna(): remove NaN values
@@ -71,14 +72,8 @@ cs_codes = cs_codes.dropna().values.tolist()
 cs_codes = [int(float(str(x).split('.')[0])) for sublist in cs_codes for x in sublist]
 
 
-#coupon_codes = pd.read_excel("C:/study/CS codes.xlsx", usecols=[1], sheet_name="coupon")
-#coupon_codes = pd.read_excel(file, usecols=[0], sheet_name="coupon")
-coupon_codes = df.iloc(0)
-
-#search last cell that is inserted data
-rows, cols = coupon_codes.shape
-last_col_index = cols - 1
-coupon_code = coupon_codes.iat[1, last_col_index]
+#coupon_code = df.iat[0, max_col]이라고 하면 에러남
+coupon_code = df.columns[max_col-1]
 
 #make list to contain index of cs codes that successed 
 complete = []
@@ -120,16 +115,20 @@ for cs_code in cs_codes:
 
 driver.quit()
 
-##alert the result to the user
-message = f"쿠폰 등록 성공: {len(complete)}명\n쿠폰 등록 실패: {len(fail)}명\n엑셀 참조"
-pyautogui.alert(message, title='미겜천 쿠폰등록하기')
+##엑셀열려있어서 오류나는 것 대비하기.
+
+
 
 
 for index in complete:
-    ws.cell(row=index+2, column =max_col+1, value="등록 성공")
+    ws.cell(row=index+2, column =max_col, value="등록 성공")
 
 for index in fail:
-    ws.cell(row=index+2, column =max_col+1, value=f"등록 실패({fail[index]})")
+    ws.cell(row=index+2, column =max_col, value=f"등록 실패({fail[index]})")
 
 # save the file
 wb.save(file)
+
+##alert the result to the user
+message = f"쿠폰 등록 성공: {len(complete)}명\n쿠폰 등록 실패: {len(fail)}명\n엑셀 참조"
+pyautogui.alert(message, title='미겜천 쿠폰등록하기')
