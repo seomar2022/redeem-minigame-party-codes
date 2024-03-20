@@ -7,9 +7,14 @@ import openpyxl
 import sys
 import os
 
+
+#파일 이름 본인이 정하게 하기? 경로는 어디로하지..
 file = "C:/study/CS codes.xlsx"
 
 previous_check =pyautogui.confirm("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
+
+#파일 탐색->존재하면 "이미 존재하는 파일입니다. 덮어씌우시겠습니까?"
+#존재
 
 if previous_check == "yes":
     pyautogui.alert("쿠폰 등록을 시작합니다.")
@@ -115,19 +120,24 @@ for cs_code in cs_codes:
 
 driver.quit()
 
-##엑셀열려있어서 오류나는 것 대비하기.
 
 
 
-
+#record the result on the excel file.
 for index in complete:
     ws.cell(row=index+2, column =max_col, value="등록 성공")
 
 for index in fail:
     ws.cell(row=index+2, column =max_col, value=f"등록 실패({fail[index]})")
 
-# save the file
-wb.save(file)
+##엑셀열려있어서 오류나는 것 대비하기.
+try:
+    # save the file
+    wb.save(file)
+except PermissionError:
+    pyautogui.alert("엑셀 파일을 닫아주세요")
+
+
 
 ##alert the result to the user
 message = f"쿠폰 등록 성공: {len(complete)}명\n쿠폰 등록 실패: {len(fail)}명\n엑셀 참조"
