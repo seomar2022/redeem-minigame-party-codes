@@ -13,27 +13,33 @@ file = "C:/study/CS codes.xlsx"
 
 previous_check =pyautogui.confirm("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
 
-#파일 탐색->존재하면 "이미 존재하는 파일입니다. 덮어씌우시겠습니까?"
-#존재
 
 if previous_check == "yes":
     pyautogui.alert("쿠폰 등록을 시작합니다.")
 else:
-    wb = openpyxl.Workbook()
-    #select currently active sheet
-    ws = wb.active
+    check_existence = os.path.exists(file)
+    if check_existence == True:
+        check_overwriting =pyautogui.confirm("이미 파일이 존재합니다. 덮어씌우시겠습니까?", buttons=['yes', 'no'])
+        if check_overwriting == "yes":
+            wb = openpyxl.Workbook()
+            #select currently active sheet
+            ws = wb.active
 
-    #change name of sheet
-    ws.title = "nicknames with CS codes"
+            #change name of sheet
+            ws.title = "nicknames with CS codes"
 
-    #write the head
-    ws.append(["nickname", "cs code", "이 셀의 내용을 지우고 등록할 쿠폰코드를 써주세요!"])
-    wb.save(file)
+            #write the head
+            ws.append(["nickname", "cs code", "이 셀의 내용을 지우고 등록할 쿠폰코드를 써주세요!"])
+            wb.save(file)
 
-    pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력 후 다시 프로그램을 실행해주세요.")
+            pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력 후 다시 프로그램을 실행해주세요.")
 
-    os.startfile(file) #open the Excel file
-    sys.exit()  # forcefully exiting the program
+            os.startfile(file) #open the Excel file
+            
+        else:
+             pyautogui.alert("파일생성을 중단합니다.")
+        sys.exit()  # forcefully exiting the program
+
 
 
 driver = webdriver.Chrome()
