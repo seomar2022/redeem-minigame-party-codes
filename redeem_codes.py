@@ -10,35 +10,42 @@ import os
 
 #파일 이름 본인이 정하게 하기? 경로는 어디로하지..
 file = "C:/study/CS codes.xlsx"
-
-previous_check =pyautogui.confirm("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
-
-
-if previous_check == "yes":
-    pyautogui.alert("쿠폰 등록을 시작합니다.")
+check_existence = os.path.exists(file)
+if check_existence == True:
+    previous_check =pyautogui.confirm("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
 else:
-    check_existence = os.path.exists(file)
-    if check_existence == True:
-        check_overwriting =pyautogui.confirm("이미 파일이 존재합니다. 덮어씌우시겠습니까?", buttons=['yes', 'no'])
-        if check_overwriting == "yes":
-            wb = openpyxl.Workbook()
-            #select currently active sheet
-            ws = wb.active
+    print("no file")
 
-            #change name of sheet
-            ws.title = "nicknames with CS codes"
 
-            #write the head
-            ws.append(["nickname", "cs code", "이 셀의 내용을 지우고 등록할 쿠폰코드를 써주세요!"])
-            wb.save(file)
+#################
+# previous_check =pyautogui.confirm("파일경로에 전용양식(CS codes.xlsx)에 모든 정보를 입력하셨나요?", buttons=['yes', 'no'])
 
-            pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력 후 다시 프로그램을 실행해주세요.")
 
-            os.startfile(file) #open the Excel file
+# if previous_check == "yes":
+#     pyautogui.alert("쿠폰 등록을 시작합니다.")
+# else:
+#     check_existence = os.path.exists(file)
+#     if check_existence == True:
+#         check_overwriting =pyautogui.confirm("이미 파일이 존재합니다. 덮어씌우시겠습니까?", buttons=['yes', 'no'])
+#         if check_overwriting == "yes":
+#             wb = openpyxl.Workbook()
+#             #select currently active sheet
+#             ws = wb.active
+
+#             #change name of sheet
+#             ws.title = "nicknames with CS codes"
+
+#             #write the head
+#             ws.append(["nickname", "cs code", "이 셀의 내용을 지우고 등록할 쿠폰코드를 써주세요!"])
+#             wb.save(file)
+
+#             pyautogui.alert("양식 파일 생성을 완료했습니다. 파일에 정보를 입력 후 다시 프로그램을 실행해주세요.")
+
+#             os.startfile(file) #open the Excel file
             
-        else:
-             pyautogui.alert("파일생성을 중단합니다.")
-        sys.exit()  # forcefully exiting the program
+#         else:
+#              pyautogui.alert("파일생성을 중단합니다.")
+#         sys.exit()  # forcefully exiting the program
 
 
 
