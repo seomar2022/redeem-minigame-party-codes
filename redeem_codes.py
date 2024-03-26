@@ -7,7 +7,7 @@ import openpyxl
 import sys
 import os
 
-
+pyautogui.confirm("미겜천 쿠폰 등록 프로그램입니다. 양식이 있는지 탐색???")
 #파일 이름 본인이 정하게 하기? 경로는 어디로하지..
 file = "C:/study/CS codes.xlsx"
 check_existence = os.path.exists(file)
@@ -18,10 +18,10 @@ if check_existence == True:
     else:
         pyautogui.alert("정보를 입력 후 다시 실행해주세요.")
         os.startfile(file) #open the Excel file
-        sys.exit()  # forcefully exiting the program
+        sys.exit()  #forcefully exiting the program
 
 else:
-    print("no file")
+    pyautogui.alert("양식 파일이 없습니다. 파일을 생성합니다.")
     wb = openpyxl.Workbook()
     #select currently active sheet
     ws = wb.active
